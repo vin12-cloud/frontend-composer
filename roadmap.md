@@ -2,3 +2,4 @@
 - [ ] Use a warmer editorial typography system, livelier industrial palette, and user theme control.
 - [ ] Add generated industrial imagery, responsive navigation, anchored sections, and enquiry interactions.
 - [ ] Validate responsive rendering, interactions, and build health.
+- [ ] Refine the visual direction toward a warmer, less robotic, more curved company website with a user theme control.
