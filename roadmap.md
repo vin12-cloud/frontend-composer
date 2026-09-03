@@ -1,0 +1,4 @@
+- [ ] Build the Global Emmex single-page visual prototype at `/` from the supplied architecture and visual plan.
+- [ ] Use a warmer editorial typography system, livelier industrial palette, and user theme control.
+- [ ] Add generated industrial imagery, responsive navigation, anchored sections, and enquiry interactions.
+- [ ] Validate responsive rendering, interactions, and build health.
