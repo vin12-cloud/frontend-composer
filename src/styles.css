@@ -35,6 +35,8 @@
   --color-brand-gold: var(--brand-gold);
   --color-brand-white: var(--brand-white);
   --color-brand-soft-gray: var(--brand-soft-gray);
+  --color-brand-on-dark-muted: var(--brand-on-dark-muted);
+  --color-brand-on-blue-muted: var(--brand-on-blue-muted);
 }
 
 :root,
@@ -63,6 +65,8 @@
   --brand-gold: oklch(0.78 0.16 80);
   --brand-white: oklch(0.99 0.008 96);
   --brand-soft-gray: oklch(0.86 0.03 230);
+  --brand-on-dark-muted: oklch(0.86 0.03 230);
+  --brand-on-blue-muted: oklch(0.94 0.02 230);
 }
 
 :root[data-theme="light"] {
@@ -89,6 +93,8 @@
   --brand-gold: oklch(0.76 0.17 78);
   --brand-white: oklch(0.99 0.008 96);
   --brand-soft-gray: oklch(0.34 0.04 240);
+  --brand-on-dark-muted: oklch(0.86 0.03 230);
+  --brand-on-blue-muted: oklch(0.94 0.02 230);
 }
 
 @layer base {

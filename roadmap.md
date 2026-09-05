@@ -1,6 +1,6 @@
-- [ ] Build the Global Emmex single-page visual prototype at `/` from the supplied architecture and visual plan.
-- [ ] Use a warmer editorial typography system, livelier industrial palette, and user theme control.
-- [ ] Add generated industrial imagery, responsive navigation, anchored sections, and enquiry interactions.
-- [ ] Validate responsive rendering, interactions, and build health.
-- [ ] Refine the visual direction toward a warmer, less robotic, more curved company website with a user theme control.
-- [ ] Apply the locked premium global-business palette: Deep Navy, Royal Blue, Electric Blue, Gold, White, and Soft Gray.
+- [x] Build the Global Emmex single-page visual prototype at `/` from the supplied architecture and visual plan.
+- [x] Use a warmer editorial typography system, livelier industrial palette, and user theme control.
+- [x] Add generated industrial imagery, responsive navigation, anchored sections, and enquiry interactions.
+- [x] Validate responsive rendering, interactions, and build health.
+- [x] Refine the visual direction toward a warmer, less robotic, more curved company website with a user theme control.
+- [x] Apply the locked premium global-business palette: Deep Navy, Royal Blue, Electric Blue, Gold, White, and Soft Gray.

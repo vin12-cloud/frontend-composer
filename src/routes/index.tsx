@@ -89,7 +89,7 @@ function GlobalEmmexHome() {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
 
   useEffect(() => {
-    document.documentElement.dataset.theme = theme;
+    document.documentElement.dataset["theme"] = theme;
   }, [theme]);
 
   const openWhatsApp = () => {
@@ -185,7 +185,7 @@ function GlobalEmmexHome() {
               <h1 className="mt-6 max-w-[720px] font-display text-[clamp(3.4rem,7.5vw,7.8rem)] leading-[0.91] tracking-[-0.055em] text-brand-white">
                 Everything that keeps business moving.
               </h1>
-              <p className="mt-7 max-w-[520px] text-lg leading-relaxed text-brand-soft-gray sm:text-xl">
+              <p className="mt-7 max-w-[520px] text-lg leading-relaxed text-brand-on-dark-muted sm:text-xl">
                 Automotive products, procurement, and contracting connected by one clear, dependable supply line.
               </p>
               <div className="mt-9 flex flex-wrap gap-3">
@@ -230,7 +230,7 @@ function GlobalEmmexHome() {
                 <p className="eyebrow text-brand-electric">02 / Products index</p>
                 <h2 className="section-title mt-4 max-w-[560px] text-brand-white">Built around the things that move.</h2>
               </div>
-              <p className="max-w-[250px] text-sm leading-relaxed text-brand-soft-gray">A focused range for automotive, industrial, and commercial requirements.</p>
+              <p className="max-w-[250px] text-sm leading-relaxed text-brand-on-dark-muted">A focused range for automotive, industrial, and commercial requirements.</p>
             </div>
             <div className="mt-8 grid gap-5 sm:grid-cols-2">
               {products.map((product) => (
@@ -243,7 +243,7 @@ function GlobalEmmexHome() {
                   <div className="flex items-start justify-between gap-5 pt-5">
                     <div>
                       <h3 className="font-display text-2xl font-medium text-brand-white">{product.title}</h3>
-                      <p className="mt-2 max-w-[360px] text-sm leading-relaxed text-brand-soft-gray">{product.description}</p>
+                      <p className="mt-2 max-w-[360px] text-sm leading-relaxed text-brand-on-dark-muted">{product.description}</p>
                     </div>
                     <a href="#contact" className="shrink-0 pt-1 text-brand-gold" aria-label={`Enquire about ${product.title}`}><ArrowRight /></a>
                   </div>
@@ -267,7 +267,7 @@ function GlobalEmmexHome() {
             <div>
               <p className="eyebrow text-brand-gold">03 / Procurement</p>
               <h2 className="section-title mt-4 max-w-[560px] text-brand-white">Source. Coordinate. Deliver.</h2>
-              <p className="mt-6 max-w-[520px] text-lg leading-relaxed text-brand-soft-gray">Procurement support that brings specification, sourcing, and logistics into one accountable conversation.</p>
+              <p className="mt-6 max-w-[520px] text-lg leading-relaxed text-brand-on-blue-muted">Procurement support that brings specification, sourcing, and logistics into one accountable conversation.</p>
               <div className="mt-8 grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
                 {["Clarify the requirement", "Coordinate the supply line", "Deliver with visibility"].map((item, index) => (
                   <div key={item} className="flex items-center gap-4 rounded-2xl border border-brand-white/15 bg-brand-navy/20 px-4 py-4">
@@ -306,10 +306,10 @@ function GlobalEmmexHome() {
             <div>
               <p className="eyebrow text-brand-gold">05 / Contact</p>
               <h2 className="section-title mt-4 max-w-[500px] text-brand-white">Let’s start a useful conversation.</h2>
-              <p className="mt-6 max-w-[430px] leading-relaxed text-brand-soft-gray">Choose what you need and we’ll point the conversation in the right direction.</p>
+              <p className="mt-6 max-w-[430px] leading-relaxed text-brand-on-dark-muted">Choose what you need and we’ll point the conversation in the right direction.</p>
               <div className="mt-8 space-y-4">
-                <div className="flex items-start gap-3 text-sm text-brand-soft-gray"><Phone className="mt-0.5 size-4 shrink-0 text-brand-electric" /><span>{company.phones.join(" · ")}<small className="mt-1 block text-xs text-brand-soft-gray/60">Public-directory numbers — unconfirmed</small></span></div>
-                <div className="flex items-start gap-3 text-sm text-brand-soft-gray"><span className="mt-0.5 size-4 shrink-0 text-center text-brand-electric">⌖</span><span>{company.address}<small className="mt-1 block text-xs text-brand-soft-gray/60">Public-directory address — unconfirmed</small></span></div>
+                <div className="flex items-start gap-3 text-sm text-brand-on-dark-muted"><Phone className="mt-0.5 size-4 shrink-0 text-brand-electric" /><span>{company.phones.join(" · ")}<small className="mt-1 block text-xs text-brand-on-dark-muted/60">Public-directory numbers — unconfirmed</small></span></div>
+                <div className="flex items-start gap-3 text-sm text-brand-on-dark-muted"><span className="mt-0.5 size-4 shrink-0 text-center text-brand-electric">⌖</span><span>{company.address}<small className="mt-1 block text-xs text-brand-on-dark-muted/60">Public-directory address — unconfirmed</small></span></div>
               </div>
             </div>
             <div className="contact-panel">
@@ -335,8 +335,8 @@ function GlobalEmmexHome() {
 
       <footer className="footer">
         <div className="page-shell flex flex-col gap-5 py-8 sm:flex-row sm:items-center sm:justify-between">
-          <div><p className="font-display text-lg text-brand-white">{company.name}</p><p className="mt-1 text-xs text-brand-soft-gray/60">Precision in movement.</p></div>
-          <div className="flex items-center gap-5 text-sm text-brand-soft-gray"><a href="#intro" className="footer-link">Back to top <ChevronDown className="rotate-180" /></a><span>© {new Date().getFullYear()}</span></div>
+          <div><p className="font-display text-lg text-brand-white">{company.name}</p><p className="mt-1 text-xs text-brand-on-dark-muted/60">Precision in movement.</p></div>
+          <div className="flex items-center gap-5 text-sm text-brand-on-dark-muted"><a href="#intro" className="footer-link">Back to top <ChevronDown className="rotate-180" /></a><span>© {new Date().getFullYear()}</span></div>
         </div>
       </footer>
 
