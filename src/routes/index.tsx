@@ -89,7 +89,7 @@ function GlobalEmmexHome() {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
 
   useEffect(() => {
-    document.documentElement.dataset.theme = theme;
+    document.documentElement.dataset["theme"] = theme;
   }, [theme]);
 
   const openWhatsApp = () => {
@@ -243,7 +243,7 @@ function GlobalEmmexHome() {
                   <div className="flex items-start justify-between gap-5 pt-5">
                     <div>
                       <h3 className="font-display text-2xl font-medium text-brand-white">{product.title}</h3>
-                      <p className="mt-2 max-w-[360px] text-sm leading-relaxed text-brand-soft-gray">{product.description}</p>
+                      <p className="mt-2 max-w-[360px] text-sm leading-relaxed text-brand-on-dark-muted">{product.description}</p>
                     </div>
                     <a href="#contact" className="shrink-0 pt-1 text-brand-gold" aria-label={`Enquire about ${product.title}`}><ArrowRight /></a>
                   </div>
@@ -335,8 +335,8 @@ function GlobalEmmexHome() {
 
       <footer className="footer">
         <div className="page-shell flex flex-col gap-5 py-8 sm:flex-row sm:items-center sm:justify-between">
-          <div><p className="font-display text-lg text-brand-white">{company.name}</p><p className="mt-1 text-xs text-brand-soft-gray/60">Precision in movement.</p></div>
-          <div className="flex items-center gap-5 text-sm text-brand-soft-gray"><a href="#intro" className="footer-link">Back to top <ChevronDown className="rotate-180" /></a><span>© {new Date().getFullYear()}</span></div>
+          <div><p className="font-display text-lg text-brand-white">{company.name}</p><p className="mt-1 text-xs text-brand-on-dark-muted/60">Precision in movement.</p></div>
+          <div className="flex items-center gap-5 text-sm text-brand-on-dark-muted"><a href="#intro" className="footer-link">Back to top <ChevronDown className="rotate-180" /></a><span>© {new Date().getFullYear()}</span></div>
         </div>
       </footer>
 
