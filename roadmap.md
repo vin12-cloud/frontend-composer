@@ -4,3 +4,4 @@
 - [x] Validate responsive rendering, interactions, and build health.
 - [x] Refine the visual direction toward a warmer, less robotic, more curved company website with a user theme control.
 - [x] Apply the locked premium global-business palette: Deep Navy, Royal Blue, Electric Blue, Gold, White, and Soft Gray.
+- [ ] Confirm final public contact details and choose whether the current single-scroll structure should remain or split into separate pages.
