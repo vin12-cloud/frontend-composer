@@ -1,8 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, ChevronDown, Menu, MessageCircle, Moon, Phone, Sun, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowRight, CheckCircle2, ChevronDown, Loader2, Menu, MessageCircle, Moon, Phone, Sun, Upload, X } from "lucide-react";
+import { useEffect, useState, type FormEvent } from "react";
 
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 import heroImage from "@/assets/global-emmex-hero.jpg";
 import powerImage from "@/assets/emmex-power.jpg";
 import logisticsImage from "@/assets/emmex-logistics.jpg";
@@ -87,6 +88,11 @@ function GlobalEmmexHome() {
   const [selectedIntent, setSelectedIntent] = useState("Automotive Products");
   const [submitted, setSubmitted] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [quoteOpen, setQuoteOpen] = useState(false);
+  const [quoteSubmitting, setQuoteSubmitting] = useState(false);
+  const [quoteComplete, setQuoteComplete] = useState(false);
+  const [quoteError, setQuoteError] = useState("");
+  const [quoteFile, setQuoteFile] = useState<File | null>(null);
 
   useEffect(() => {
     document.documentElement.dataset["theme"] = theme;
@@ -107,6 +113,60 @@ function GlobalEmmexHome() {
   const scrollTo = (href: string) => {
     setMenuOpen(false);
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const openQuote = (intent = selectedIntent) => {
+    setSelectedIntent(intent);
+    setQuoteComplete(false);
+    setQuoteError("");
+    setQuoteOpen(true);
+    setEnquiryOpen(false);
+  };
+
+  const submitQuote = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setQuoteSubmitting(true);
+    setQuoteError("");
+
+    const formData = new FormData(event.currentTarget);
+    const attachment = quoteFile;
+    let attachmentPath: string | null = null;
+
+    try {
+      if (attachment) {
+        if (attachment.size > 10 * 1024 * 1024) {
+          throw new Error("Please choose a file smaller than 10MB.");
+        }
+        attachmentPath = `${crypto.randomUUID()}-${attachment.name.replace(/[^a-zA-Z0-9._-]/g, "-")}`;
+        const { error: uploadError } = await supabase.storage
+          .from("quote-attachments")
+          .upload(attachmentPath, attachment, { contentType: attachment.type || "application/octet-stream" });
+        if (uploadError) throw uploadError;
+      }
+
+      const { error } = await supabase.from("quote_requests").insert({
+        full_name: String(formData.get("full_name") ?? ""),
+        company_name: String(formData.get("company_name") ?? "") || null,
+        email: String(formData.get("email") ?? ""),
+        phone: String(formData.get("phone") ?? ""),
+        request_type: String(formData.get("request_type") ?? selectedIntent),
+        product: String(formData.get("product") ?? "") || null,
+        quantity: String(formData.get("quantity") ?? "") || null,
+        delivery_location: String(formData.get("delivery_location") ?? "") || null,
+        needed_by: String(formData.get("needed_by") ?? "") || null,
+        notes: String(formData.get("notes") ?? "") || null,
+        attachment_path: attachmentPath,
+      });
+
+      if (error) throw error;
+      setQuoteComplete(true);
+      setQuoteFile(null);
+      event.currentTarget.reset();
+    } catch (error) {
+      setQuoteError(error instanceof Error ? error.message : "We could not send your request. Please try again.");
+    } finally {
+      setQuoteSubmitting(false);
+    }
   };
 
   return (
@@ -312,7 +372,7 @@ function GlobalEmmexHome() {
                 <div className="flex items-start gap-3 text-sm text-brand-on-dark-muted"><span className="mt-0.5 size-4 shrink-0 text-center text-brand-electric">⌖</span><span>{company.address}<small className="mt-1 block text-xs text-brand-on-dark-muted/60">Public-directory address — unconfirmed</small></span></div>
               </div>
             </div>
-            <div className="contact-panel">
+             <div className="contact-panel">
               <div className="flex items-start justify-between gap-5">
                 <div>
                   <p className="eyebrow text-brand-electric">Enquiry desk</p>
@@ -325,7 +385,7 @@ function GlobalEmmexHome() {
               </div>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Button className="rounded-full bg-brand-gold text-brand-navy hover:bg-brand-electric hover:text-brand-navy" onClick={openWhatsApp}><MessageCircle /> Continue on WhatsApp</Button>
-                <Button variant="outline" className="rounded-full border-brand-white/25 text-brand-white hover:border-brand-gold hover:bg-transparent hover:text-brand-white" onClick={() => setSubmitted(true)}>Request a callback</Button>
+                 <Button variant="outline" className="rounded-full border-brand-white/25 text-brand-white hover:border-brand-gold hover:bg-transparent hover:text-brand-white" onClick={() => openQuote()}>Request a quote</Button>
               </div>
               {submitted && <p className="mt-5 rounded-2xl border border-brand-gold/30 bg-brand-gold/10 px-4 py-3 text-sm leading-relaxed text-brand-gold">The official WhatsApp number and email are still awaiting confirmation. This prototype keeps the enquiry path ready without presenting placeholder contact details as live.</p>}
             </div>
@@ -341,9 +401,50 @@ function GlobalEmmexHome() {
       </footer>
 
       <div className="floating-enquiry">
-        {enquiryOpen && <div className="enquiry-popover"><p className="eyebrow text-brand-blue">Choose an enquiry</p><div className="mt-3 grid gap-1">{enquiryOptions.map((option) => <button type="button" key={option} className="enquiry-option" onClick={() => { setSelectedIntent(option); setEnquiryOpen(false); scrollTo("#contact"); }}>{option}<ArrowRight /></button>)}</div></div>}
+         {enquiryOpen && <div className="enquiry-popover"><p className="eyebrow text-brand-blue">Choose an enquiry</p><div className="mt-3 grid gap-1">{enquiryOptions.map((option) => <button type="button" key={option} className="enquiry-option" onClick={() => openQuote(option)}>{option}<ArrowRight /></button>)}</div></div>}
         <Button className="rounded-full bg-brand-gold px-5 py-6 text-brand-navy shadow-xl hover:bg-brand-electric hover:text-brand-navy" onClick={() => setEnquiryOpen((open) => !open)}>{enquiryOpen ? <X /> : <MessageCircle />} <span className="hidden sm:inline">Make an enquiry</span></Button>
       </div>
+
+       {quoteOpen && (
+         <div className="quote-modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setQuoteOpen(false); }}>
+           <section className="quote-modal" role="dialog" aria-modal="true" aria-labelledby="quote-title">
+             <div className="flex items-start justify-between gap-5">
+               <div>
+                 <p className="eyebrow text-brand-blue">Request a quote</p>
+                 <h2 id="quote-title" className="mt-3 font-display text-4xl leading-none text-brand-navy">Tell us what needs moving.</h2>
+                 <p className="mt-3 max-w-[540px] text-sm leading-relaxed text-brand-navy/65">Share the essentials and our team can respond with the right next step.</p>
+               </div>
+               <Button variant="ghost" size="icon" className="quote-close" onClick={() => setQuoteOpen(false)} aria-label="Close quote request"><X /></Button>
+             </div>
+
+             {quoteComplete ? (
+               <div className="quote-success mt-8">
+                 <CheckCircle2 className="size-8 text-brand-blue" />
+                 <div><h3 className="font-display text-2xl text-brand-navy">Request received.</h3><p className="mt-1 text-sm leading-relaxed text-brand-navy/65">Thank you. Your requirements are safely saved, and the Global Emmex team can follow up from here.</p></div>
+                 <Button className="mt-3 rounded-full bg-brand-navy text-brand-white hover:bg-brand-blue" onClick={() => setQuoteOpen(false)}>Done</Button>
+               </div>
+             ) : (
+               <form className="quote-form mt-8" onSubmit={submitQuote}>
+                 <div className="quote-form-grid">
+                   <label>Full name<input name="full_name" required autoComplete="name" placeholder="Your name" /></label>
+                   <label>Company<input name="company_name" autoComplete="organization" placeholder="Company name" /></label>
+                   <label>Email<input name="email" type="email" required autoComplete="email" placeholder="you@company.com" /></label>
+                   <label>Phone<input name="phone" required autoComplete="tel" placeholder="Phone number" /></label>
+                   <label>Request type<select name="request_type" defaultValue={selectedIntent}>{enquiryOptions.map((option) => <option key={option}>{option}</option>)}</select></label>
+                   <label>Product or service<input name="product" placeholder="e.g. commercial tyres" /></label>
+                   <label>Quantity or scope<input name="quantity" placeholder="e.g. 20 units / site work" /></label>
+                   <label>Needed by<input name="needed_by" type="date" /></label>
+                 </div>
+                 <label>Delivery location<input name="delivery_location" placeholder="City, state or project site" /></label>
+                 <label>Additional details<textarea name="notes" rows={4} placeholder="Specifications, vehicle details, project requirements or anything else we should know." /></label>
+                 <label className="quote-file-label"><span>Brief or specification <small>optional, up to 10MB</small></span><span className="quote-file-control"><Upload /><span>{quoteFile?.name ?? "Choose a file"}</span><input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" onChange={(event) => setQuoteFile(event.target.files?.[0] ?? null)} /></span></label>
+                 {quoteError && <p className="quote-error" role="alert">{quoteError}</p>}
+                 <div className="flex flex-wrap items-center justify-between gap-4 pt-2"><p className="text-xs leading-relaxed text-brand-navy/55">By sending this request, you’re asking Global Emmex to contact you about your requirements.</p><Button type="submit" disabled={quoteSubmitting} className="rounded-full bg-brand-gold px-6 text-brand-navy hover:bg-brand-electric hover:text-brand-navy">{quoteSubmitting ? <><Loader2 className="animate-spin" /> Sending…</> : <>Send request <ArrowRight /></>}</Button></div>
+               </form>
+             )}
+           </section>
+         </div>
+       )}
     </div>
   );
 }
