@@ -140,7 +140,7 @@ function GlobalEmmexHome() {
         attachmentPath = `${crypto.randomUUID()}-${attachment.name.replace(/[^a-zA-Z0-9._-]/g, "-")}`;
         const { error: uploadError } = await supabase.storage
           .from("quote-attachments")
-          .upload(attachmentPath, attachment, { contentType: attachment.type || undefined });
+          .upload(attachmentPath, attachment, { contentType: attachment.type || "application/octet-stream" });
         if (uploadError) throw uploadError;
       }
 
